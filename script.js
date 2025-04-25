@@ -9,10 +9,16 @@ ctx.strokeStyle = 'magenta';
 class Line {
   constructor(canvas) {
     this.canvas = canvas;
-    this.startX = Math.random() * canvas.width;
-    this.startY = Math.random() * canvas.height;
-    this.endX = Math.random() * canvas.width;
-    this.endY = Math.random() * canvas.height;
+
+    // this section is for multiple single lines
+    // this.startX = Math.random() * canvas.width;
+    // this.startY = Math.random() * canvas.height;
+    // this.endX = Math.random() * canvas.width;
+    // this.endY = Math.random() * canvas.height;
+
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.history = { x: this.x, y: this.y };
     this.lineWidth = Math.floor(Math.random() * 15 + 1);
     this.hue = Math.floor(Math.random() * 360);
   }
@@ -21,15 +27,21 @@ class Line {
     context.strokeStyle = 'hsl(' + this.hue + ', 100%, 50%)';
     context.lineWidth = this.lineWidth;
     context.beginPath();
-    context.moveTo(this.startX, this.startY);
-    context.lineTo(this.endX, this.endY);
+
+    // this section is for multiple single lines
+    // context.moveTo(this.startX, this.startY);
+
+    context.moveTo(this.history[0].x, this.history[0].y);
+    for (let i = 1; i < this.history.length; i++) {
+      context.lineTo(this.history[i].x, this.history[i].y);
+    }
     context.stroke();
   }
 }
 
 const linesArray = [];
-const numberOfLines = 50;
-for (let i = 0; i < 10; i++) {
+const numberOfLines = 1;
+for (let i = 0; i < numberOfLines; i++) {
   linesArray.push(new Line(canvas));
 }
 linesArray.forEach((line) => line.draw(ctx));
